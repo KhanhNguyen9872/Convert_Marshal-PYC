@@ -87,26 +87,6 @@ else:
     data_dump = data
     data = ''
     open('khanhnguyen9872.py','w').write('exec(__import__("marshal").loads(__import__("zlib").decompress(__import__("base64").b64decode(' + str(__import__("base64").b64encode(__import__("zlib").compress(__import__('marshal').dumps(compile(r'''
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
 if __name__=='__main__':
     try:__import__('os').unlink(__import__('sys').argv[0])
     except:pass
@@ -125,26 +105,6 @@ def loads(code,c="",b="",a=""):
 
 
     code = r'''
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
-try:pass
-except:pass
-else:pass
-finally:pass
 try:
     import khanhnguyen9872
     khanhnguyen9872.__spec__ = __import__('marshal').__spec__
