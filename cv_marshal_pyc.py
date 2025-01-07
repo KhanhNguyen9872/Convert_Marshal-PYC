@@ -81,7 +81,7 @@ if day_la_binary:
                 data_dump = data[i:]
                 print(">> this file is PYC")
                 print(">> Convert to marshal loads....")
-                open(r"{}{}_marshal.py".format(path_save,file_name2),'w').write("# Marshal/PYC by KhanhNguyen9872\n# File name: [{}] (PYC -> Marshal)\n\nexec(__import__('marshal').loads(".format(file_name) + str(data_dump) + "),globals())")
+                open(r"{}{}_marshal.py".format(path_save,file_name2),'w').write("# Marshal/PYC by KhanhNguyen9872\n# File name: [{}] (PYC -> Marshal)\n\nexec(__import__('marshal').loads(".format(file_name) + str(data_dump) + "))")
                 print(">> Saved [{}_marshal.py]".format(file_name2))
                 print(">> Done!")
                 break
