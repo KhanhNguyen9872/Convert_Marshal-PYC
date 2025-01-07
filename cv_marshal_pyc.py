@@ -16,6 +16,8 @@ try:
 except NameError:
     __cpy_syspath__ = sys.executable
 
+pyver = ".".join(sys.version.split(" ")[0].split(".")[:-1])
+
 def get_magic(pyver):
     magic = {
     '3.6' : b'3\r\r\n\x8bq\x98d\x0c\x00\x00\x00\xe3\x00\x00\x00',
@@ -25,9 +27,13 @@ def get_magic(pyver):
     '3.10' : b'o\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
     '3.11' : b'\xa7\r\r\n\x00\x00\x00\x00\x04\x94\x90d\xd4`\x00\x00',
     '3.12' : b'\xcb\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
-    '3.13' : b'\xee\r\r\n\x00\x00\x00\x00*\x80\xb4e\x0b\x00\x00\x00'
+    '3.13' : b'\xee\r\r\n\x00\x00\x00\x00*\x80\xb4e\x0b\x00\x00\x00',
+    '3.14' : b'\x19\x0e\r\n\x00\x00\x00\x00\xa3\xb0|g\n\x00\x00\x00'
     }
-    return magic[pyver]
+    try:
+        return magic[pyver]
+    except KeyError:
+        print("Unsupported python {}".format(pyver))
 
 print(">>> Marshal/PYC by KhanhNguyen9872")
 print(">>> FB: https://fb.me/khanh10a1")
@@ -35,8 +41,6 @@ print("!! ĐÂY LÀ TOOL SHARE FREE TẠI GITHUB KHANHNGUYEN9872 !!")
 print("!! NẾU BẠN MUA TOOL NÀY TỪ MỘT AI ĐÓ, HỌ LÀ LỪA ĐẢO !!")
 print()
 
-
-pyver = ".".join(sys.version.split(" ")[0].split(".")[:-1])
 print(">> Python: {}".format(pyver))
 
 while 1:
