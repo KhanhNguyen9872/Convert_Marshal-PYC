@@ -1,4 +1,10 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+import sys, subprocess, os
+
+if sys.version_info[0] < 3:
+    input = raw_input
 
 def rm_dir(dir):
     try:
@@ -6,8 +12,6 @@ def rm_dir(dir):
     except:
         pass
 rm_dir('__pycache__')
-
-import sys, subprocess, os
 
 __devnull__ = open('nul' if os.name == 'nt' else '/dev/null', 'wb')
 
@@ -20,32 +24,36 @@ pyver = ".".join(sys.version.split(" ")[0].split(".")[:-1])
 
 def get_magic(pyver):
     magic = {
-    '3.6' : b'3\r\r\n\x8bq\x98d\x0c\x00\x00\x00\xe3\x00\x00\x00',
-    '3.7' : b'B\r\r\n\x00\x00\x00\x00\x8bq\x98d\x0c\x00\x00\x00',
-    '3.8' : b'U\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
-    '3.9' : b'a\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
-    '3.10' : b'o\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
-    '3.11' : b'\xa7\r\r\n\x00\x00\x00\x00\x04\x94\x90d\xd4`\x00\x00',
-    '3.12' : b'\xcb\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
-    '3.13' : b'\xee\r\r\n\x00\x00\x00\x00*\x80\xb4e\x0b\x00\x00\x00',
-    '3.14' : b'\x19\x0e\r\n\x00\x00\x00\x00\xa3\xb0|g\n\x00\x00\x00'
+        '2.7' : b'\x03\xf3\r\n\x10\xcc\x9di',
+        '3.6' : b'3\r\r\n\x8bq\x98d\x0c\x00\x00\x00\xe3\x00\x00\x00',
+        '3.7' : b'B\r\r\n\x00\x00\x00\x00\x8bq\x98d\x0c\x00\x00\x00',
+        '3.8' : b'U\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
+        '3.9' : b'a\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
+        '3.10' : b'o\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
+        '3.11' : b'\xa7\r\r\n\x00\x00\x00\x00\x04\x94\x90d\xd4`\x00\x00',
+        '3.12' : b'\xcb\r\r\n\x00\x00\x00\x00\tq\x98d\x0b\x00\x00\x00',
+        '3.13' : b'\xee\r\r\n\x00\x00\x00\x00*\x80\xb4e\x0b\x00\x00\x00',
+        '3.14' : b'+\x0e\r\n\x00\x00\x00\x00\x10\xcc\x9di\x0b\x00\x00\x00',
+        '3.15' : b'L\x0e\r\n\x00\x00\x00\x00\x10\xcc\x9di\x0b\x00\x00\x00',
     }
+
     try:
         return magic[pyver]
     except KeyError:
         print("Unsupported python {}".format(pyver))
+        __import__('sys').exit()
 
 print(">>> Marshal/PYC by KhanhNguyen9872")
 print(">>> FB: https://fb.me/khanh10a1")
-print("!! ĐÂY LÀ TOOL SHARE FREE TẠI GITHUB KHANHNGUYEN9872 !!")
-print("!! NẾU BẠN MUA TOOL NÀY TỪ MỘT AI ĐÓ, HỌ LÀ LỪA ĐẢO !!")
+print("!! THIS IS A FREE SHARED TOOL AT GITHUB KHANHNGUYEN9872 !!")
+print("!! IF YOU BOUGHT THIS TOOL FROM SOMEONE, THEY ARE A SCAMMER !!")
 print()
 
 print(">> Python: {}".format(pyver))
 
 while 1:
     try:
-        file = input(">> Input file marshal/PYC: ").replace("\"","")
+        file = input(">> Input file marshal/PYC: ").strip().replace("\"","")
         sieu_nhan_gao_xanh = open(file, 'rb').read(4)
         if b"\r\r\n" in sieu_nhan_gao_xanh:
             day_la_binary = True
@@ -55,11 +63,8 @@ while 1:
             print('>> this file too large!')
             continue
         break
-    except FileNotFoundError:
-        print('>> file not found!')
-    except PermissionError:
-        print('>> permission denied!')
-    except OSError:
+    except (IOError, OSError):
+        print('>> file error!')
         continue
 
 del sieu_nhan_gao_xanh
@@ -91,7 +96,7 @@ if day_la_binary:
 else:
     data_dump = data
     data = ''
-    open('khanhnguyen9872.py','w').write('exec(__import__("marshal").loads(__import__("zlib").decompress(__import__("base64").b64decode(' + str(__import__("base64").b64encode(__import__("zlib").compress(__import__('marshal').dumps(compile(r'''
+    open('khanhnguyen9872.py','w').write('exec(__import__("marshal").loads(__import__("zlib").decompress(__import__("base64").b64decode(' + repr(__import__("base64").b64encode(__import__("zlib").compress(__import__('marshal').dumps(compile(r'''
 if __name__=='__main__':
     try:__import__('os').unlink(__import__('sys').argv[0])
     except:pass
@@ -112,20 +117,27 @@ def loads(code,c="",b="",a=""):
     code = r'''
 try:
     import khanhnguyen9872
-    khanhnguyen9872.__spec__ = __import__('marshal').__spec__
+    if hasattr(__import__('marshal'), '__spec__'):
+        khanhnguyen9872.__spec__ = __import__('marshal').__spec__
     __import__('sys').modules['marshal']=__import__('sys').modules['khanhnguyen9872']
     __import__('marshal').loads.__module__ = 'marshal'
 except:
     __import__('sys').exit(1)
 
 '''.encode('utf8') + data_dump
-    open('temp_code.py','w').write('exec(__import__("marshal").loads(__import__("zlib").decompress(__import__("base64").b64decode(' + str(__import__("base64").b64encode(__import__("zlib").compress(__import__('marshal').dumps(compile(code,'<KhanhNguyen9872>','exec'))))[::-1])+"[::-1]))),globals())")
+    open('temp_code.py','w').write('exec(__import__("marshal").loads(__import__("zlib").decompress(__import__("base64").b64decode(' + repr(__import__("base64").b64encode(__import__("zlib").compress(__import__('marshal').dumps(compile(code,'<KhanhNguyen9872>','exec'))))[::-1])+"[::-1]))),globals())")
 
-    cmd = f"{__cpy_syspath__} temp_code.py" if os.name == 'nt' else '{} temp_code.py'.format(sys.executable)
+    cmd = "{} temp_code.py".format(__cpy_syspath__) if os.name == 'nt' else '{} temp_code.py'.format(sys.executable)
     if os.name == 'nt':
-        subprocess.check_output(cmd, stderr = __devnull__, timeout = 15)
+        if sys.version_info[0] < 3:
+            subprocess.check_output(cmd, stderr = __devnull__)
+        else:
+            subprocess.check_output(cmd, stderr = __devnull__, timeout = 15)
     else:
-        subprocess.run(cmd, stderr = __devnull__, shell=True)
+        if hasattr(subprocess, 'run'):
+            subprocess.run(cmd, stderr = __devnull__, shell=True)
+        else:
+            subprocess.call(cmd, stderr = __devnull__, shell=True)
     os.unlink('khanhnguyen9872.py')
     os.unlink('temp_code.py')
 
@@ -140,7 +152,7 @@ except:
             print(">> Done!")
         else:
             pass
-    except FileNotFoundError:
+    except (IOError, OSError):
         data_dump = ''
         pass
 
