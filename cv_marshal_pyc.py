@@ -5,6 +5,12 @@ import sys, subprocess, os
 
 if sys.version_info[0] < 3:
     input = raw_input
+else:
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='ignore')
+        sys.stderr.reconfigure(encoding='utf-8', errors='ignore')
+    except:
+        pass
 
 def rm_dir(dir):
     try:
@@ -22,8 +28,8 @@ except NameError:
 
 pyver = ".".join(sys.version.split(" ")[0].split(".")[:-1])
 
-def get_magic(pyver):
-    magic = {
+def get_magic_table():
+    return {
         '2.5' : b'\xb3(\r\n\x00\x00\x00\x00',
         '2.6' : b'\xd1 \r\n\x00\x00\x00\x00',
         '2.7' : b'\x03\xf3\r\n\x10\xcc\x9di',
@@ -45,11 +51,18 @@ def get_magic(pyver):
         '3.15' : b'L\x0e\r\n\x00\x00\x00\x00\x10\xcc\x9di\x0b\x00\x00\x00',
     }
 
+def get_magic(pyver):
+    magic = get_magic_table()
     try:
         return magic[pyver]
     except KeyError:
         print("Unsupported python {}".format(pyver))
         __import__('sys').exit()
+
+def is_pyc_file(file_path, header):
+    if file_path.lower().endswith('.pyc'):
+        return True
+    return b'\x00' in header
 
 print(">>> Marshal/PYC by KhanhNguyen9872")
 print(">>> FB: https://fb.me/khanh10a1")
@@ -63,10 +76,7 @@ while 1:
     try:
         file = input(">> Input file marshal/PYC: ").strip().replace("\"","")
         sieu_nhan_gao_xanh = open(file, 'rb').read(4)
-        if b"\r\r\n" in sieu_nhan_gao_xanh:
-            day_la_binary = True
-        else:
-            day_la_binary = False
+        day_la_binary = is_pyc_file(file, sieu_nhan_gao_xanh)
         if int(__import__('os').stat(file).st_size) > 1073741824:
             print('>> this file too large!')
             continue
@@ -94,7 +104,7 @@ if day_la_binary:
                 data_dump = data[i:]
                 print(">> this file is PYC")
                 print(">> Convert to marshal loads....")
-                open(r"{}{}_marshal.py".format(path_save,file_name2),'w').write("# Marshal/PYC by KhanhNguyen9872\n# File name: [{}] (PYC -> Marshal)\n\nexec(__import__('marshal').loads(".format(file_name) + str(data_dump) + "))")
+                open(r"{}{}_marshal.py".format(path_save,file_name2),'w').write("# Marshal/PYC by KhanhNguyen9872\n# File name: [{}] (PYC -> Marshal)\n\nimport sys\ntry:\n    sys.stdout.reconfigure(encoding='utf-8', errors='ignore')\n    sys.stderr.reconfigure(encoding='utf-8', errors='ignore')\nexcept:\n    pass\nexec(__import__('marshal').loads(".format(file_name) + str(data_dump) + "))")
                 print(">> Saved [{}_marshal.py]".format(file_name2))
                 print(">> Done!")
                 break
